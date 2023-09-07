@@ -1,118 +1,159 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { format } from "date-fns";
+import {
+  BatteryFull,
+  Briefcase,
+  Headphones,
+  ScrollText,
+  Share2,
+} from "lucide-react";
+import { Poppins } from "next/font/google";
+import Wave from "react-wavify";
+import clsx from "clsx";
+import { use, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import IconBox from "@/components/IconBox";
+import Image from "next/image";
+import Header from "@/components/Header";
+import HorizontalMenu from "@/components/HorizontalMenu";
 
-const inter = Inter({ subsets: ['latin'] })
+const poppins = Poppins({
+  display: "auto",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin-ext"],
+});
 
 export default function Home() {
+  const [mainMenuXCounter, setMainMenuXCounter] = useState(-260);
+  const [mainMenuYCounter, setMainMenuYCounter] = useState(0);
+  const [verticalCounter, setVerticalCounter] = useState(0);
+  const [menuItem, setMenuItem] = useState(0);
+  useEffect(() => {
+    if (mainMenuXCounter > 47.5) {
+      setMainMenuXCounter(-260);
+    } else if (mainMenuXCounter < -260) {
+      setMainMenuXCounter(47.5);
+    }
+  }, [mainMenuXCounter]);
+
+  const onCircleClick = () => {
+    setMenuItem(0);
+    setMainMenuYCounter(0);
+  };
+
+  const onCrossClick = () => {
+    setMenuItem(1);
+    setMainMenuYCounter(-100);
+  };
+
+  const onRightClick = () => {
+    setMainMenuXCounter(mainMenuXCounter - 102.5);
+  };
+
+  const onLeftClick = () => {
+    setMainMenuXCounter(mainMenuXCounter + 102.5);
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
+    <>
+      <div
+        className={clsx(
+          "min-h-screen flex flex-col items-center justify-between ${poppins.className} max-w-screen overflow-hidden transition-all duration-500 ",
+          menuItem === 1 && "bg-emerald-900"
+        )}
+      >
+        <Header />
+        <div className="z-10 flex flex-col justify-between items-center gap-10 mt-32">
+          <HorizontalMenu
+            mainMenuXCounter={mainMenuXCounter}
+            mainMenuYCounter={mainMenuYCounter}
+          />
+          <div>
+            <motion.div
+              className="flex flex-col items-center justify-center gap-2"
+              animate={{ x: verticalCounter, opacity: menuItem }}
+              transition={{ ease: "easeOut", duration: 0.5 }}
+              initial={{ opacity: 0, x: 500 }}
+            >
+              <div className="mt-2 flex flex-row items-center justify-between text-stone-400 w-[40vh] hover:bg-stone-800 p-4 rounded-xl">
+                <div>Lendtable</div>
+                <div className="mx-4 flex-grow border border-t border-stone-700" />
+                <div>Since 2021</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="z-10 flex flex-col items-center justify-between">
+          <div>
+            <Button onClick={onCircleClick} variant="ghost">
+              <Image src="/img/O.svg" height={50} width={50} alt="X" />
+            </Button>
+          </div>
+          <div className="flex flex-row -mt-3">
+            <Button onClick={onLeftClick} className="mr-6" variant="ghost">
+              <Image src="/img/Left.svg" height={50} width={50} alt="Right" />
+            </Button>
+            <Button onClick={onRightClick} variant="ghost">
+              <Image src="/img/Right.svg" height={50} width={50} alt="Right" />
+            </Button>
+          </div>
+          <div className="mb-10">
+            <Button onClick={onCrossClick} variant="ghost">
+              <Image src="/img/X.svg" height={50} width={50} alt="X" />
+            </Button>
+          </div>
+          <div className="mb-4 flex flex-row items-center md:text-sm text-xs">
+            ANI © 2020 | Interface inspired by the Sony{" "}
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+              src="/img/PSLogo.svg"
+              className="ml-2"
+              height={70}
+              width={70}
+              alt="PlayStation Portable"
+            />{" "}
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <Wave
+        fill="#292524"
+        paused={false}
+        style={{ position: "absolute", bottom: 0, height: "50%" }}
+        options={{
+          amplitude: 40,
+          speed: 0.2,
+          points: 5,
+        }}
+      />
+      <Wave
+        fill="#1C1917"
+        paused={false}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          height: "48%",
+        }}
+        options={{
+          amplitude: 50,
+          speed: 0.15,
+          points: 4,
+        }}
+      />
+      <Wave
+        fill={`${menuItem === 1 ? "#022c22" : "#0c0a09"} `}
+        paused={false}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          height: "48%",
+          transition: "all 2s ease",
+        }}
+        options={{
+          amplitude: 30,
+          speed: 0.25,
+          points: 3,
+        }}
+      />
+    </>
+  );
 }
