@@ -1,18 +1,9 @@
-import { format } from "date-fns";
-import {
-  BatteryFull,
-  Briefcase,
-  Headphones,
-  ScrollText,
-  Share2,
-} from "lucide-react";
 import { Poppins } from "next/font/google";
 import Wave from "react-wavify";
 import clsx from "clsx";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import IconBox from "@/components/IconBox";
 import Image from "next/image";
 import Header from "@/components/Header";
 import HorizontalMenu from "@/components/HorizontalMenu";
@@ -59,7 +50,8 @@ export default function Home() {
       <div
         className={clsx(
           "min-h-screen flex flex-col items-center justify-between ${poppins.className} max-w-screen overflow-hidden transition-all duration-500 ",
-          menuItem === 1 && "bg-emerald-900"
+          menuItem === 1 && "bg-emerald-900",
+          `${poppins.className}`
         )}
       >
         <Header />
